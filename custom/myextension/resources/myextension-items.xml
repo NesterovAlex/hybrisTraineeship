@@ -9,14 +9,30 @@
 <items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 			xsi:noNamespaceSchemaLocation="items.xsd">
 
+	<collectiontypes>
+		<collectiontype code="ActorList" elementtype="Actor" autocreate="true" generate="false" type="list"/>
+		<collectiontype code="FilmCollection" elementtype="Film" autocreate="true" generate="false"/>
+	</collectiontypes>
+
+	<relations>
+		<relation code="Films2Actors" autocreate="true" generate="true" localized="false">
+			<deployment table="Films2Actors" typecode="30277"/>
+			<sourceElement qualifier="films" type="Film" cardinality="many" ordered="false">
+				<modifiers read="true" write="true" search="true" optional="true"/>
+			</sourceElement>
+			<targetElement qualifier="actors" type="Actor" cardinality="many" collectiontype="list" ordered="true">
+				<modifiers read="true" write="true" search="true" optional="true"/>
+			</targetElement>
+		</relation>
+	</relations>
+
 	<itemtypes>
 
 		<itemtype generate="true"
 		   code="CarProduct"
 		   jaloclass="training.my.jalo.MyProduct"
 		   extends="Product"
-		   autocreate="true"
-	   >
+		   autocreate="true">
 			<attributes>
 
 				<attribute qualifier="color" type="java.lang.String">
@@ -34,5 +50,28 @@
 			</attributes>
 		</itemtype>
 
+		<itemtype generate="true" code="Actor" autocreate="true">
+			<deployment table="Actors" typecode="30275" />
+			<attributes>
+				<attribute qualifier="actorCode" type="java.lang.String">
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="films" type="FilmCollection">
+					<modifiers unique="false" read="false"/>
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype generate="true" code="Film" autocreate="true">
+			<deployment table="Films" typecode="30276" />
+			<attributes>
+				<attribute qualifier="filmCode" type="java.lang.String">
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
 	</itemtypes>
+
 </items>
